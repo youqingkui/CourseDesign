@@ -1,0 +1,26 @@
+extend layout
+
+block content
+  if infoMsg
+     div.alert.alert-danger= infoMsg
+  form.form-horizontal(method="post").
+    <fieldset>
+    <legend>用户登入</legend>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="username">用户名</label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" id="username" name="username">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="password">口令</label>
+      <div class="col-sm-6">
+        <input type="password" class="form-control" id="password" name="password">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">登入</button>
+      </div>
+    </div>
+  </fieldset>

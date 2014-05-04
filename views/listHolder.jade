@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  table.table.table-striped
+    tr
+      td 姓名
+      td 手机号码
+      td 身份证
+      td 入住时间
+      td 房间号码
+    each h in holders
+      tr
+        td=h.holderName
+        td=h.phoneNum
+        td=h.identityNum
+        td=h.date
+        td=h.fllorName
+    
+      

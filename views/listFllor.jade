@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  table.table.table-striped
+    tr
+      td 楼层
+      td 房号
+      td 住户
+    each f in fllors
+      tr
+        td=f.layers
+        td=f.name
+        td=f.holderID
+    
+      

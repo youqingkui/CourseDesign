@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  
+  if errorMsg
+    div.alert.alert-danger= errorMsg
+  
+  else if successMsg
+    div.alert.alert-success= successMsg
+    
+  div.row.col-md-offset-4
+    form(method='post', action='/addHolder' class="form-horizontal" id="addHolder").
+      <div class="form-group">
+        <div class="col-xs-6">
+          <label class='' for="holderName">户主姓名</label>
+          <input type="text" class="form-control" id="holderName" name="holderName" placeholder="" />
+        </div>
+      </div>
+      <div class="form-group">
+      <div class="col-xs-6">
+        <label class="" for="phoneNum">手机号码</label>
+        <input type="text" class="form-control" id="phoneNum" name="phoneNum" placeholder="">
+      </div>
+      </div>
+      <div class="form-group">
+        <div class = "col-xs-6">
+          <label class="" for="identityNum">身份证号码</label>
+          <input type="text" class="form-control" id="identityNum" name="identityNum" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class ="col-xs-6">
+        <label class="" for="date">入住时间</label>
+        <input type="date" class="form-control" id="date" name="date" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class = "col-xs-6">
+          <label class="" for="fllorName">入住房号</label>
+          <input type="text" class="form-control" id="fllorName" name="fllorName" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class = "col-xs-6">
+        <button type="submit" class="btn btn-default">新建</button>
+        </div>
+      </div>
