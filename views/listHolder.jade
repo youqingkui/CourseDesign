@@ -8,12 +8,19 @@ block content
       td 身份证
       td 入住时间
       td 房间号码
+      td
     each h in holders
       tr
         td=h.holderName
-        td=h.phoneNum
+        td
+          a(href='/editHolder/' + h.phoneNum)
+            =h.phoneNum
+    
         td=h.identityNum
         td=h.date
         td=h.fllorName
+        td
+          a(href='/deleteHolder/'+h.ID) 删除
+          
     
       

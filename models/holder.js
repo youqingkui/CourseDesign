@@ -43,6 +43,7 @@ Holder.prototype.save = function save(callback){
 }
 
 Holder.get = function get(phoneNumber, callback){
+  console.log(phoneNumber);
   mongodb.open(function(err, db){
     if(err){
       return callback(err); 
@@ -52,7 +53,7 @@ Holder.get = function get(phoneNumber, callback){
         mongodb.close();
         return callback(err);
       }
-      collection.find().sort({holderName : -1}).toArray(function(err, docs){
+      collection.find(phoneNumber).sort({holderName : -1}).toArray(function(err, docs){
         mongodb.close();
         if(err){
           return callback(err); 
@@ -62,12 +63,56 @@ Holder.get = function get(phoneNumber, callback){
           var holder = new Holder(doc);
           holders.push(holder);
         });
+        //console.log(holders);
         callback(null, holders);
         
         
       });
     });
     
+  });
+}
+
+Holder.update = function update(findID, updateValue, callback){
+  mongodb.open(function(err, db){
+    if(err){
+      return callback(err); 
+    }
+    db.collection('holders', function(err, collection){
+      if(err){
+        mongodb.close();
+        return callback(err);
+      }
+      collection.update(findID,{ "$set" : updateValue}, function(err){
+        mongodb.close();
+        if(err){
+          return callback(err); 
+        }
+        callback(null);
+      });
+    });
+    
+  });
+  
+}
+
+Holder.delete = function deleteHolder(findID, callback){
+  mongodb.open(function(err, db){
+    if(err){
+      return callback(err);
+    }
+    db.collection('holders', function(err, collection){
+      if(err){
+        return callback(err);
+      }
+      collection.remove(findID, function(err){
+        mongodb.close();
+        if(err){
+          return callback(err); 
+        }
+        callback(null);
+      });
+    });
   });
   
 }

@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var User = require('../models/user.js');
 var Fllor = require('../models/fllor.js');
 var Holder = require('../models/holder.js');
+var ObjectID = require('mongodb').ObjectID;
 
 
 /* GET home page. */
@@ -200,6 +201,61 @@ router.get("/listHolder", function(req, res){
     return res.render("listHolder", {holders: holders}); 
   });
   
+});
+
+router.get("/editHolder/:phoneNum", function(req, res){
+  console.log(req.params.phoneNum);
+  Holder.get({"phoneNum":req.params.phoneNum}, function(err, holder){
+    if(holder){
+      console.log(holder);
+      return res.render("editHolder", {holder : holder}); 
+    }
+    
+  });
+  
+});
+
+router.post("/editHolder/", function(req, res){
+  var holderName = req.body.holderName.trim();
+  var phoneNum   = req.body.phoneNum.trim();
+  var identityNum = req.body.identityNum.trim();
+  var date        = req.body.date.trim();
+  var fllorName   = req.body.fllorName.trim();
+  var newHolder = {
+    holderName : holderName,
+    phoneNum   : phoneNum,
+    identityNum: identityNum,
+    date       : date,
+    fllorName  : fllorName
+  };
+  var holderID = new ObjectID (req.body.holderID);
+  Holder.get({"_id" : holderID}, function(err, holder){
+    if(holder){
+      console.log("find");
+      Holder.update({"_id":holderID}, newHolder, function(err){
+        if(err){
+          console.log(err); 
+        }
+        var successMsg = "修改成功";
+        return res.redirect("/listHolder");
+      });
+      
+    }
+  });
+});
+
+router.get("/deleteHolder/:ID", function(req, res){
+  var HolderID = new ObjectID(req.params.ID);
+  Holder.get({"_id" : HolderID}, function(err, holder){
+    if(holder){
+      Holder.delete({"_id" : HolderID}, function(err){
+        if(err){
+          console.log(err); 
+        }
+        console.log("delete ok");
+      });
+    }
+  });
 });
 
 module.exports = router;
