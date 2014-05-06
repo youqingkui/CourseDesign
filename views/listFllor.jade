@@ -7,6 +7,7 @@ block content
       td 房号
       td 结构
       td 面积
+      td
     each f in fllors
       tr
         td=f.layers
@@ -15,5 +16,7 @@ block content
             =f.name
         td=f.structure
         td=f.area
+        td
+          a(href='/deleteFllor/' + f.name) 删除
     
       

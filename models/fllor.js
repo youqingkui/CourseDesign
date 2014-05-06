@@ -128,3 +128,25 @@ Fllor.update = function update(findID, updateValue, callback){
     });
   });
 }
+
+Fllor.delete = function deleteFllor(findID, callback){
+  mongodb.open(function(err, db){
+    if(err){
+      return callback(err); 
+    }
+    db.collection('fllors', function(err, collection){
+      if(err){
+        mongodb.close();
+        return callback(err);
+      }
+      collection.remove(findID, function(err){
+        mongodb.close();
+        if(err){
+         return callback(err); 
+        }
+        callback(null);
+      });
+    });
+  });
+  
+}

@@ -12,6 +12,7 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 
+/*登入*/
 router.get('/login', function(req, res){
   res.render("login", { title : "登入" });
 });
@@ -34,15 +35,12 @@ router.post('/login', function(req, res){
     else{
       req.session.user = user;
       console.log(user["ID"]);
-      return res.redirect('/');
-       
+      return res.redirect('/');  
     }
-    
-  });
-  
-  
+  }); 
 });
 
+/*注册*/
 router.get('/reg', function(req, res){
   res.render("reg", { title : "注册"});
   
@@ -88,13 +86,14 @@ router.post('/reg', function(req, res){
 
 });
 
+/*登出*/
 router.get('/logout', function(req, res){
   req.session.user = null;
   return res.redirect('/');
   
 });
 
-
+/*楼层模块*/
 router.get('/addFllor', function(req, res){
   return res.render('addFllor', { title : "新建楼层"});
 });
@@ -169,10 +168,47 @@ router.get('/listFllor', function(req, res){
 
 router.get("/editFllor/:roomname", function(req, res){
   var roomname = req.params.roomname;
+  Fllor.getOne(roomname, function(err, fllor){
+    if(fllor){
+      console.log(fllor);
+      return res.render("editFllor", { title : "编辑楼层", fllor : fllor}); 
+    }
+  });
   
 });
 
+router.post("/editFllor/", function(req, res){
+  var layers = req.body.layers.trim();
+  var area   = req.body.area.trim();
+  var structure = req.body.structure.trim();
+  var roomName   = req.body.roomNumber.trim();
+  var findID = new ObjectID(req.body.fllorID);
+  var newFllor = {
+    layers : layers,
+    area   : area,
+    structure : structure,
+    roomName  : roomName,
+  }
+  Fllor.update({"_id" : findID}, newFllor, function(err){
+    if(err){
+      return console.log(err); 
+    }
+    console.log("update fllor ok");
+    return res.redirect('/listFllor');
+  });
+});
 
+router.get("/deleteFllor/:roomname", function(req, res){
+  var roomname = req.params.roomname;
+  Fllor.delete({name : roomname}, function(err){
+    if(err){
+      console.log(err); 
+    }
+    return res.redirect('/listFllor');
+  });
+});
+
+/*住户模块*/
 router.get('/addHolder', function(req, res){
   return res.render("addHolder", {title : "添加住户" });
   
