@@ -101,11 +101,15 @@ router.get('/addFllor', function(req, res){
 
 router.post('/addFllor', function(req, res){
   var layers = req.body.layers.trim();
-  console.log(layers);
+  var area   = req.body.area.trim();
+  var structure = req.body.structure.trim();
   var roomName   = req.body.roomNumber.trim();
   var newFllor = new Fllor({
     layers : layers,
-    name   : roomName
+    name   : roomName,
+    structure : structure,
+    area   : area
+    
   });
   Fllor.getOne(newFllor.name, function(err, fllor){
     if(fllor){
@@ -159,6 +163,12 @@ router.get('/listFllor', function(req, res){
   Fllor.getAll(null, function(err, fllor){
     return res.render("listFllor", {fllors : fllor});
   })
+  
+});
+
+
+router.get("/editFllor/:roomname", function(req, res){
+  var roomname = req.params.roomname;
   
 });
 

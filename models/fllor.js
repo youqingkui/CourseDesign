@@ -4,7 +4,9 @@ function Fllor(room){
   this.ID = room["_id"];
   this.layers = room.layers;
   this.name   = room.name;
-  this.holderID = room.holderID
+  this.holderID = room.holderID;
+  this.area   = room.area;
+  this.structure = room.structure;
 }
 
 module.exports = Fllor;
@@ -13,7 +15,9 @@ Fllor.prototype.save = function save(callback){
   var fllor = {
     layers : this.layers,
     name   : this.name,
-    holderID : this.holderID
+    holderID : this.holderID,
+    area     : this.area,
+    structure: this.structure
   };
   
   mongodb.open(function(err, db){
@@ -102,4 +106,25 @@ Fllor.getAll = function get(name, callback){
     });
   });
   
+}
+
+Fllor.update = function update(findID, updateValue, callback){
+  mongodb.open(function(err, db){
+    if(err){
+      return callback(err);
+    }
+    db.collection('fllors', function(err, collection){
+      if(err){
+        mongodb.close();
+        return callback(err);
+      }
+      collection.update(findID,{"$set" : updateValue}, function(err){
+        mongodb.close();
+        if(err){
+          return callback(err);
+        }
+        callback(null);
+      });
+    });
+  });
 }

@@ -5,11 +5,15 @@ block content
     tr
       td 楼层
       td 房号
-      td 住户
+      td 结构
+      td 面积
     each f in fllors
       tr
         td=f.layers
-        td=f.name
-        td=f.holderID
+        td
+          a(href='/editFllor/' + f.name)
+            =f.name
+        td=f.structure
+        td=f.area
     
       
