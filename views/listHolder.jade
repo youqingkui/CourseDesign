@@ -13,14 +13,14 @@ block content
       tr
         td=h.holderName
         td
-          a(href='/editHolder/' + h.phoneNum)
+          a(href='/holders/edit/' + h.phoneNum)
             =h.phoneNum
     
         td=h.identityNum
         td=h.date
         td=h.fllorName
         td
-          a(href='/deleteHolder/'+h.ID) 删除
+          a(href='/holders/delete/'+h.ID) 删除
           
     
       
