@@ -12,6 +12,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var fllors = require('./routes/fllors');
 var holders = require('./routes/holders');
+var costs = require('./routes/costs');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(connect.session({
 app.use(function(req, res, next){
     res.locals.user = req.session.user;
     res.locals.err = req.session.error;
+    req.session.error = null;
                                                     
     // console.log("err" ,  req.session.error);
                                                     
@@ -47,6 +49,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/fllors', fllors);
 app.use('/holders', holders);
+app.use('/costs', costs);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
