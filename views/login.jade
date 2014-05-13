@@ -1,9 +1,9 @@
 extend layout
 
 block content
-  if infoMsg
-     div.alert.alert-danger= infoMsg
-  form.form-horizontal(method="post").
+  if err
+     div.alert.alert-danger= err
+  form.form-horizontal(method="post", action="/users/login").
     <fieldset>
     <legend>用户登入</legend>
     <div class="form-group">

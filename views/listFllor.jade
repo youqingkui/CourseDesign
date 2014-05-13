@@ -7,6 +7,7 @@ block content
       td 房号
       td 结构
       td 面积
+      td 住户
       td
     each f in fllors
       tr
@@ -16,6 +17,9 @@ block content
             =f.name
         td=f.structure
         td=f.area
+        td
+          if f.holderInfo
+            =f.holderInfo.holderName
         td
           a(href='/fllors/delete/' + f.name) 删除
     

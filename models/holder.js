@@ -30,7 +30,12 @@ Holder.prototype.save = function save(callback){
         mongodb.close(); 
         return callback(err);
       }
-      collection.ensureIndex('phoneNum', {unique: true});
+      collection.ensureIndex('phoneNum', {unique: true}, function(err){
+        if(err){
+          mongodb.close();
+          return callback(err);
+        }
+      });
       collection.insert(holder, {safe : true}, function(err, holder){
         mongodb.close();
         return callback(err, holder); 
@@ -43,7 +48,7 @@ Holder.prototype.save = function save(callback){
 }
 
 Holder.get = function get(phoneNumber, callback){
-  console.log(phoneNumber);
+  
   mongodb.open(function(err, db){
     if(err){
       return callback(err); 
@@ -55,17 +60,16 @@ Holder.get = function get(phoneNumber, callback){
       }
       collection.find(phoneNumber).sort({holderName : -1}).toArray(function(err, docs){
         mongodb.close();
-        if(err){
-          return callback(err); 
+        if(docs.length){
+          var holders = [];
+          docs.forEach(function(doc, index){
+            var holder = new Holder(doc);
+            holders.push(holder);
+          });
+          //console.log(holders);
+          return callback(null, holders);
         }
-        var holders = [];
-        docs.forEach(function(doc, index){
-          var holder = new Holder(doc);
-          holders.push(holder);
-        });
-        //console.log(holders);
-        callback(null, holders);
-        
+        return callback(err, null);
         
       });
     });
@@ -103,6 +107,7 @@ Holder.delete = function deleteHolder(findID, callback){
     }
     db.collection('holders', function(err, collection){
       if(err){
+        mongodb.close()
         return callback(err);
       }
       collection.remove(findID, function(err){

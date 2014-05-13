@@ -1,6 +1,11 @@
 extends layout
 
 block content
+  if err
+    div.alert.alert-danger= err
+  if success
+    div.alert.alert-success= success
+  
   table.table.table-striped
     tr
       td 姓名

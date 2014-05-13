@@ -25,23 +25,50 @@ router.post('/add', function(req, res){
     date       : date,
     fllorName  : fllorName
   });
-  newHolder.save(function(err){
-    if(err){
-      var errorMsg = "error";
+
+  Fllor.getOne(fllorName, function(err, fllor){
+    if(fllor && (!fllor.holderInfo)){
+      newHolder.save(function(err, holder){
+        if(err){
+          var errorMsg = "新建出现错误";
+          return res.render("addHolder", {errorMsg : errorMsg});
+        }
+        var updateValue = { 
+            holderName : holderName,
+            phoneNum   : phoneNum,
+            identityNum: identityNum,
+            date       : date,
+            ID         : holder[0]["_id"]
+        };
+        console.log(updateValue);
+        Fllor.update({name : fllorName}, {holderInfo : updateValue}, function(err){
+          if(err){
+            var errorMsg = "更新对应楼层信息出现错误";
+            return res.render("addHolder", {errorMsg : errorMsg});
+          }
+          var successMsg = "新建成功";
+          return res.render("addHolder", {successMsg : successMsg});
+        });
+        
+      });
+    }
+    else if(!fllor){
+      var errorMsg = "没有这个楼房";
       return res.render("addHolder", {errorMsg : errorMsg});
     }
-    else{
-      var successMsg = "添加成功";
-      return res.render("addHolder", {successMsg : successMsg});
+    else if(fllor &&(fllor.holderInfo)){
+      var errorMsg = "这个楼房已经有用户入驻";
+      return res.render("addHolder", {errorMsg : errorMsg});
     }
   });
+
   
 });
 
 
 router.get("/", function(req, res){
   Holder.get(null, function(err, holders){
-    console.log(holders);
+    
     return res.render("listHolder", {holders: holders}); 
   });
   
@@ -51,7 +78,7 @@ router.get("/edit/:phoneNum", function(req, res){
   console.log(req.params.phoneNum);
   Holder.get({"phoneNum":req.params.phoneNum}, function(err, holder){
     if(holder){
-      console.log(holder);
+      //console.log(holder);
       return res.render("editHolder", {holder : holder}); 
     }
     
@@ -75,7 +102,7 @@ router.post("/edit", function(req, res){
   var holderID = new ObjectID (req.body.holderID);
   Holder.get({"_id" : holderID}, function(err, holder){
     if(holder){
-      console.log("find");
+      //console.log("find");
       Holder.update({"_id":holderID}, newHolder, function(err){
         if(err){
           console.log(err); 
@@ -94,9 +121,18 @@ router.get("/delete/:ID", function(req, res){
     if(holder){
       Holder.delete({"_id" : HolderID}, function(err){
         if(err){
-          console.log(err); 
+          req.session.error = "删除出现错误";
+          return res.redirect('/holders');
         }
-        return res.redirect('/holders');
+        Fllor.update({"holderInfo.ID" : HolderID }, {holderInfo : null}, function(err){
+          if(err){
+            req.session.error = "修改对应楼层信息失败";
+            return res.redirect("/holders");
+          }
+          req.session.success = "删除用户成功";
+          return res.redirect('/holders');
+        });
+        
       });
     }
   });

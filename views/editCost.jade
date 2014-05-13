@@ -1,6 +1,11 @@
 extends layout
 
 block content
+  if cost[0].date.month
+    -var date = cost[0].date.month
+  else
+    -var date= cost[0].date
+    
   if err
     div.alert.alert-danger= err
 
@@ -9,35 +14,35 @@ block content
   
     
   div.row.col-md-offset-4
-    form(method='post', action='/costs/add' class="form-horizontal" id="addCost").
+    form(method='post', action='/costs/editCost' class="form-horizontal" id="addCost").
       <div class="form-group">
         <div class="col-xs-6">
           <label class='' for="fllorName">房间号码</label>
-          <input type="text" class="form-control" id="fllorName" name="fllorName" placeholder="" />
+          <input type="text" class="form-control" id="fllorName" name="fllorName" value=#{cost[0].fllorName} placeholder="" />
         </div>
       </div>
       <div class="form-group">
       <div class="col-xs-6">
         <label class="" for="waterCost">水费</label>
-        <input type="number" class="form-control" id="waterCost" name="waterCost" placeholder="">
+        <input type="number" class="form-control" id="waterCost" name="waterCost" value=#{cost[0].waterCost} placeholder="">
       </div>
       </div>
       <div class="form-group">
         <div class = "col-xs-6">
           <label class="" for="electricityCost">电费</label>
-          <input type="number" class="form-control" id="electricityCost" name="electricityCost" placeholder="">
+          <input type="number" class="form-control" id="electricityCost" name="electricityCost" value=#{cost[0].electricityCost} placeholder="">
         </div>
       </div>
       <div class="form-group">
         <div class ="col-xs-6">
         <label class="" for="otherCost">其他费用</label>
-        <input type="number" class="form-control" id="otherCost" name="otherCost" placeholder="">
+        <input type="number" class="form-control" id="otherCost" name="otherCost" value=#{cost[0].otherCost} placeholder="">
         </div>
       </div>
       <div class="form-group">
         <div class = "col-xs-6">
           <label class="" for="date">日期</label>
-          <input type="month" class="form-control" id="date" name="date" placeholder="">
+          <input type="month" class="form-control" id="date" name="date" value=#{date}  placeholder="">
         </div>
       </div>
       <div class="form-group">

@@ -1,5 +1,8 @@
 extends layout
 
 block content
+  if success
+    div.alert.alert-success= success
+  
   h1= title
   p Welcome to #{title}

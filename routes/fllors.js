@@ -25,6 +25,20 @@ router.post('/add', function(req, res){
   });
   Fllor.getOne(newFllor.name, function(err, fllor){
     if(fllor){
+      var errorMsg = "已经存在这个楼层";
+      return res.render("addFllor", {errorMsg : errorMsg});
+    }
+    newFllor.save(function(err){
+      if(err){
+        var errorMsg = "出现错误";
+        return res.render("addFllor", {errorMsg : errorMsg});
+      }
+      var successMsg = "添加成功";
+      return res.render("addFllor", {successMsg : successMsg});
+    });
+  });
+/*  Fllor.getOne(newFllor.name, function(err, fllor){
+    if(fllor){
       if(fllor.layers == newFllor.layers){
         var errorMsg = "已经存在这个楼层";
         return res.render("addFllor", { errorMsg : errorMsg });
@@ -49,7 +63,7 @@ router.post('/add', function(req, res){
       });
       
     }
-  });
+  });*/
 
 /*  Fllor.getOne(newFllor.layers, function(err, fllor){
     if(fllor){

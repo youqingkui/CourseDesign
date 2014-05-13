@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  if err
+    div.alert.alert-danger= err
+
+  else if success
+    div.alert.alert-success= success
+  
+    
+  table.table.table-striped
+    tr
+      td 房号
+      td 总费用
+      td 日期
+      td
+    each c in costs
+      if c.date.month
+        -var date = c.date.month
+      else if c.date
+        -var date = c.date
+        
+        
+      tr
+        td
+          a(href="/costs/editCost/" + c.fllorName)=c.fllorName
+          
+        td=c.toalCost
+        td=date
+
+    
+      

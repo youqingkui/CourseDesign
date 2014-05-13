@@ -7,14 +7,15 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     -var chkValue = "登入";
-    -var chkHref ='/login';
-    -var regLink ='<a href="/reg">注册</a>';
+    -var chkHref ='/users/login';
+    -var regLink ='<a href="/users/reg">注册</a>';
     if user
         -chkValue = "登出";
-        -chkHref = '/logout';
+        -chkHref = '/users/logout';
         -regLink ='';
         -var Link1 = '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">楼层 <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="/fllors/add">新建楼层</a></li><li><a href="/fllors">楼层列表</a></li></ul></li>';
         -var Link2 = '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">住户 <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="/holders/add">新建住户</a></li><li><a href="/holders">住户列表</a></li></ul></li>';
+        -var Link3 = '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">费用 <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="/costs/add">录入费用</a></li><li><a href="/costs">费用列表</a></li></ul></li>';
     nav.navbar.navbar-inverse(role="navigation").
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -35,6 +36,7 @@ html
             </li>
             !{Link1}
             !{Link2}
+            !{Link3}
         </ul>
         <ul class="nav navbar-nav navbar-right">
         <li>
