@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Cost = require('../models/cost');
 var Fllor = require("../models/fllor");
+var ObjectID = require('mongodb').ObjectID;
 
 
 /* GET users listing. */
@@ -14,6 +15,27 @@ router.get('/', function(req, res) {
     }
     return res.render("listCost", {costs : costs});
   })
+});
+
+router.post("/", function(req, res){
+  var month = req.body.month;
+  Cost.get({"$or" : [{"date.month" : month}, {"date" : month}]}, function(err, docs){
+    if(docs){
+      console.log("findVale");
+      return res.send(docs);
+    }
+    return res.send(null);
+  });
+});
+
+router.get("/fllorName/:fllorName", function(req, res){
+  Cost.get({"fllorName" : req.params.fllorName}, function(err, docs){
+    if(docs){
+      return res.render("fllorCost", {costs : docs}); 
+    }
+    req.session.error = "没有用查询到楼层的费用信息";
+    return res.redirect("/costs");
+  });
 });
 
 router.get('/add', function(req, res){
@@ -35,18 +57,22 @@ router.post('/add', function(req, res){
   Fllor.getOne(cost.fllorName, function(err, fllor){
     if(fllor){
       Cost.get({"fllorName" : fllor.name}, function(err, docs){
+        console.log("costdocs");
+        console.log(docs);
+        console.log("end");
+        console.log(cost.date);
         if(docs && (docs[0].date.month == cost.date || docs[0].date == cost.date)){
           req.session.error = "已经添加过这个楼房的当前时间的物业费用";
           return res.redirect("/costs/add");
         }
-        else if(docs){
+        else{
           newCost.save(function(err, doc){
             if(err){
               req.session.error = "添加费用出现错误";
               return res.redirect("/costs/add");
             }
             req.session.success = "添加成功";
-            return res.redirect
+            return res.redirect("/costs/add");
           });
         }
         
@@ -63,8 +89,9 @@ router.post('/add', function(req, res){
   });
 });
 
-router.get("/editCost/:fllorName", function(req, res){
-  Cost.get({"fllorName" : req.params.fllorName}, function(err, docs){
+router.get("/editCost/:fllorName/:date", function(req, res){
+  var month = req.params.date;
+  Cost.get({"fllorName" : req.params.fllorName, "$or" : [{"date.month" : month}, {"date" : month}]}, function(err, docs){
     if(docs){
       console.log(docs);
       return res.render("editCost", {cost : docs}); 
@@ -78,6 +105,7 @@ router.get("/editCost/:fllorName", function(req, res){
 router.post("/editCost", function(req, res){
   var cost = {};
   //console.log(cost);
+  var ID = new ObjectID(req.body.ID);
   cost.fllorName = req.body.fllorName.trim();
   cost.waterCost = Number(req.body.waterCost.trim());
   cost.electricityCost = Number(req.body.electricityCost.trim());
@@ -89,7 +117,7 @@ router.post("/editCost", function(req, res){
     if(doc){
       console.log("find value");
       console.log(doc);
-      Cost.update({"fllorName" : doc[0].fllorName}, cost, function(err){
+      Cost.update({"_id" : ID}, cost, function(err){
         if(err){
           req.session.error = "更新出现错误!";
           return res.redirect("/costs");

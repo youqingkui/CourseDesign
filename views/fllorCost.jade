@@ -7,11 +7,13 @@ block content
   else if success
     div.alert.alert-success= success
   
-  input(type='month' class="form-control" id = "monthFind")  
   table.table.table-striped
     thead
       tr
         th 房号
+        th 水费
+        th 电费
+        th 其他费用
         th 总费用
         th 日期
     each c in costs
@@ -22,11 +24,11 @@ block content
         
         
       tr
-        td
-          a(href="/costs/fllorName/" + c.fllorName)=c.fllorName
-          
+        td= c.fllorName
+        td= c.waterCost
+        td= c.electricityCost
+        td= c.otherCost
         td=c.toalCost
-        td=date
-
-    
-      
+        td
+          a(href='/costs/editCost/' + c.fllorName + '/' + date)= date
+        
