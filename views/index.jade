@@ -3,6 +3,9 @@ extends layout
 block content
   if success
     div.alert.alert-success= success
-  
-  h1= title
-  p Welcome to #{title}
+  div.jumbotron
+    h1 Welcome
+    p 你可以查询每月的物业费用或者给我们建议以及故障申报
+    p
+      a(href='/query' class='btn btn-primary')费用查询
+      a(href='/failure' class='btn btn-default')故障申报

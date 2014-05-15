@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  if err
+    div.alert.alert-danger= err
+
+  else if success
+    div.alert.alert-success= success
+  
+  table.table.table-striped
+    thead
+      tr
+        th 房号
+        th 水费
+        th 电费
+        th 其他费用
+        th 总费用
+        th 日期
+    each c in costs
+      if c.date.month
+        -var date = c.date.month
+      else if c.date
+        -var date = c.date
+        
+        
+      tr
+        td= c.fllorName
+        td= c.waterCost
+        td= c.electricityCost
+        td= c.otherCost
+        td=c.toalCost
+        td= date
+        
