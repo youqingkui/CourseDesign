@@ -87,7 +87,7 @@ router.post('/reg', function(req, res){
 });
 
 /*登出*/
-router.get('/users/logout', function(req, res){
+router.get('/logout', function(req, res){
   req.session.user = null;
   return res.redirect('/');
   
