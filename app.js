@@ -1,5 +1,9 @@
 var express = require('express');
 var connect = require('connect');
+var fs = require('fs');
+var accessLogfile = fs.createWriteStream('access.log', {flags: 'a'});
+var errorLogfile = fs.createWriteStream('error.log', {flags: 'a'});
+//var logfile = fs.createWriteStream('./logfile.log', {flags: 'a'});
 var MongoStore = require('connect-mongo')(connect);
 var settings = require('./settings');
 var path = require('path');
@@ -27,7 +31,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+//app.use(connect.logger({stream: logfile}));
+app.use(connect.logger({stream: accessLogfile}));
 //链接到mongodb session
 app.use(connect.session({
     secret: settings.cookieSecret,
@@ -72,7 +77,11 @@ app.use(function(req, res, next) {
 });
 
 /// error handlers
-
+app.use(function (err, req, res, next) {
+  var meta = '[' + new Date() + '] ' + req.url + '\n';
+  errorLogfile.write(meta + err.stack + '\n');
+  next();
+});
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
