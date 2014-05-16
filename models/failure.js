@@ -17,7 +17,7 @@ Failure.prototype.save = function save(callback){
     holderName : this.holderName,
     phoneNum   : this.phoneNum,
     fllorName  : this.fllorName,
-    connect    : this.content,
+    content    : this.content,
     doPeople   : this.doPeople,
     status     : this.status
   }
@@ -45,7 +45,7 @@ Failure.get = function get(findValue, callback){
     if(err){
       return callback(err); 
     }
-    db.collection('failure', function(err, collection){
+    db.collection('failures', function(err, collection){
       if(err){
         mongodb.close();
         return callback(err);
@@ -60,9 +60,30 @@ Failure.get = function get(findValue, callback){
           });
           return callback(null, failures);
         }
-        return callback(null);
+        return callback(err, null);
       });
     });
   
+  });
+}
+
+Failure.update = function update(findValue, updateValue, callback){
+  mongodb.open(function(err, db){
+    if(err){
+      return callback(err); 
+    }
+    db.collection('failures', function(err, collection){
+      if(err){
+        mongodb.close();
+        return callback(err);
+      }
+      collection.update(findValue,{"$set": updateValue}, function(err){
+        mongodb.close();
+        if(err){
+          return callback(err);
+        }
+        return callback(null);
+      });
+    });
   });
 }

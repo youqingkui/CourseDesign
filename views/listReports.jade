@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  if err
+    div.alert.alert-danger= err
+
+  else if success
+    div.alert.alert-success= success
+   
+  table.table.table-striped
+    thead
+      tr
+        th 单号
+        th 联系人
+        th 电话
+        th 房号
+        th 处理状态
+        th 处理人
+    each r in reports
+        
+      tr
+        td
+          a(href='/failures/do/' + r.ID)=r.ID 
+        td= r.holderName
+        td= r.phoneNum  
+        td= r.fllorName
+        td= r.status
+        td= r.doPeople
+
+    
+      

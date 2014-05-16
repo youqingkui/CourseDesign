@@ -13,6 +13,7 @@ var users = require('./routes/users');
 var fllors = require('./routes/fllors');
 var holders = require('./routes/holders');
 var costs = require('./routes/costs');
+var failures = require('./routes/failures');
 
 var app = express();
 
@@ -48,11 +49,19 @@ app.use(function(req, res, next){
 });
 
 app.use('/', routes);
+app.use(function(req, res){
+  if(req.session.user){
+    console.log("user"); 
+  }
+  else{
+    console.log("no user"); 
+  }
+});
 app.use('/users', users);
 app.use('/fllors', fllors);
 app.use('/holders', holders);
 app.use('/costs', costs);
-
+app.use('/failures', failures);
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
