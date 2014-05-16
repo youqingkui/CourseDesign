@@ -49,15 +49,17 @@ app.use(function(req, res, next){
 });
 
 app.use('/', routes);
-app.use(function(req, res){
+app.use('/users', users);
+app.use(function(req, res, next){
   if(req.session.user){
-    console.log("user"); 
+    console.log("user");
+    next();
   }
   else{
     console.log("no user"); 
+    return res.redirect("/");
   }
 });
-app.use('/users', users);
 app.use('/fllors', fllors);
 app.use('/holders', holders);
 app.use('/costs', costs);

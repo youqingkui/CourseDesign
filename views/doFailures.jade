@@ -11,37 +11,37 @@ block content
   div.row.col-md-offset-4
     form(method='post', action='' class="form-horizontal" id="addHolder").
       <div class="form-group">
-        <div class="col-xs-6">
+        <div class="col-md-6">
           <label class='' for="holderName">联系人</label>
           <input type="text" class="form-control" id="holderName" value=#{docs[0].holderName} name="holderName" disabled />
         </div>
       </div>
       <div class="form-group">
-      <div class="col-xs-6">
+      <div class="col-md-6">
         <label class="" for="phoneNum">手机号码</label>
         <input type="text" class="form-control" id="phoneNum" value=#{docs[0].phoneNum} name="phoneNum" disabled />
       </div>
       </div>
       <div class="form-group">
-        <div class="col-xs-6">
+        <div class="col-md-6">
           <label class='' for="fllorName">房间号码</label>
           <input type="text" class="form-control" id="fllorName" value=#{docs[0].fllorName} name="fllorName" disabled />
         </div>
       </div>
       <div class="form-group">
-        <div class = "col-xs-6">
+        <div class = "col-md-6">
           <label class="" for="content">问题描述</label>
           <textarea class="form-control" id="content" name="content" rows="3" disabled>#{docs[0].content}</textarea>
         </div>
       </div>
       <div class="form-group">
-        <div class = "col-xs-6">
+        <div class = "col-md-6">
           <label class="" for="doPeople">添加处理人</label>
-          <input type="text" class="form-control" id="doPeople" value=#{docs[0].doPeople} name="doPeople" />
+          <input type="text" class="form-control" id="doPeople" value="#{docs[0].doPeople}"  name="doPeople" />
         </div>
       </div>
       <div class="form-group">
-        <div class = "col-xs-6">
+        <div class = "col-md-6">
         <button type="submit" class="btn btn-default">处理</button>
         <input type="hidden" name="ID" value=#{docs[0].ID} />
         </div>

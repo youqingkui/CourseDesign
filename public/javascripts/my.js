@@ -43,5 +43,10 @@ $(document).ready(function(){
       }
     });
   });
+  $("li").removeClass("active");
+  switch(location.pathname){
+    case "/" : $(".link1").addClass("active"); break;
+    case "/failures" : $(".link5").addClass("active");break;
+  }
   
 });
