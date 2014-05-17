@@ -60,7 +60,7 @@ Failure.get = function get(findValue, callback){
           });
           return callback(null, failures);
         }
-        return callback(err, null);
+        return callback(err, []);
       });
     });
   

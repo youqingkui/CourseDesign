@@ -4,3 +4,12 @@ form.form-inline{
 form#addHolder{
    text-align: center;
 }
+
+.jumbotron{
+  text-align: center;
+}
+
+.btn2{
+  margin-left: 10px;
+  margin-right: 10px;
+}

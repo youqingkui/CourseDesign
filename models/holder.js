@@ -69,7 +69,7 @@ Holder.get = function get(phoneNumber, callback){
           //console.log(holders);
           return callback(null, holders);
         }
-        return callback(err, null);
+        return callback(err, []);
         
       });
     });
