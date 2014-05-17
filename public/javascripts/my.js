@@ -1,13 +1,17 @@
 $(document).ready(function(){
+  /*监听要提交的数据表单事件*/
   $("#monthFind").change(function(){
     var value = $(this).val();
     var reqestDate = {"month" : value};
+    /*post发送要查询的值给服务器端*/
     $.post("/costs", reqestDate, function(date){
+      /*如果有数据，优雅的动画显示*/
       if(date){
         $(".alert").slideUp(function(){
           $(this).remove(); 
         });
         var html = "";
+        /*将接收到的数据变为html*/
         for(i in date){
           if(date[i].date.month){
             var time = date[i].date.month; 
@@ -24,6 +28,7 @@ $(document).ready(function(){
         });
         console.log("ok");
       }
+      /*没有查询到给出月份的信息，优雅的动画显示*/
       else{
         /*$(".alert").slideUp(function(){
           $(this).remove(); 

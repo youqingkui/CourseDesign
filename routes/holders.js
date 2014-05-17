@@ -12,58 +12,7 @@ router.get('/add', function(req, res){
   
 });
 
-router.post('/add', function(req, res){
-  var holderName = req.body.holderName.trim();
-  var phoneNum   = req.body.phoneNum.trim();
-  var identityNum = req.body.identityNum.trim();
-  var date        = req.body.date.trim();
-  var fllorName   = req.body.fllorName.trim();
-  var newHolder = new Holder({
-    holderName : holderName,
-    phoneNum   : phoneNum,
-    identityNum: identityNum,
-    date       : date,
-    fllorName  : fllorName
-  });
 
-  Fllor.getOne(fllorName, function(err, fllor){
-    if(fllor && (!fllor.holderInfo)){
-      newHolder.save(function(err, holder){
-        if(err){
-          var errorMsg = "新建出现错误";
-          return res.render("addHolder", {errorMsg : errorMsg});
-        }
-        var updateValue = { 
-            holderName : holderName,
-            phoneNum   : phoneNum,
-            identityNum: identityNum,
-            date       : date,
-            ID         : holder[0]["_id"]
-        };
-        console.log(updateValue);
-        Fllor.update({name : fllorName}, {holderInfo : updateValue}, function(err){
-          if(err){
-            var errorMsg = "更新对应楼层信息出现错误";
-            return res.render("addHolder", {errorMsg : errorMsg});
-          }
-          var successMsg = "新建成功";
-          return res.render("addHolder", {successMsg : successMsg});
-        });
-        
-      });
-    }
-    else if(!fllor){
-      var errorMsg = "没有这个楼房";
-      return res.render("addHolder", {errorMsg : errorMsg});
-    }
-    else if(fllor &&(fllor.holderInfo)){
-      var errorMsg = "这个楼房已经有用户入驻";
-      return res.render("addHolder", {errorMsg : errorMsg});
-    }
-  });
-
-  
-});
 
 
 router.get("/", function(req, res){

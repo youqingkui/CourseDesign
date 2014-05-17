@@ -10,7 +10,7 @@ var ObjectID = require('mongodb').ObjectID;
 router.get('/add', function(req, res){
   return res.render('addFllor', { title : "新建楼层"});
 });
-
+/*接收要添加的住房信息*/
 router.post('/add', function(req, res){
   var layers = req.body.layers.trim();
   var area   = req.body.area.trim();
@@ -23,11 +23,14 @@ router.post('/add', function(req, res){
     area   : area
     
   });
+    /*检查是否已经添加过这个住房*/
   Fllor.getOne(newFllor.name, function(err, fllor){
+    /*如果要添加的住房已经存在*/
     if(fllor){
       var errorMsg = "已经存在这个楼层";
       return res.render("addFllor", {errorMsg : errorMsg});
     }
+    /*存储数据到数据库*/
     newFllor.save(function(err){
       if(err){
         var errorMsg = "出现错误";

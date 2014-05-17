@@ -16,10 +16,12 @@ router.get('/', function(req, res) {
     return res.render("listCost", {costs : costs});
   })
 });
-
+/*接收ajax的数据请求*/
 router.post("/", function(req, res){
   var month = req.body.month;
+  /*查询接收到的数据信息*/
   Cost.get({"$or" : [{"date.month" : month}, {"date" : month}]}, function(err, docs){
+    /*如果有则给数据*/
     if(docs){
       console.log("findVale");
       return res.send(docs);

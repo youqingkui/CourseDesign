@@ -13,23 +13,28 @@ router.get('/login', function(req, res){
   res.render("login", { title : "登入" });
 });
 
+/*接收登入数据*/
 router.post('/login', function(req, res){
   var name = req.body.username.trim();
   var password = req.body.password.trim();
   User.get(name, function(err, user){
+    /*如果没有这个用户名*/
     if(!user){
 /*      var infoMsg = "没有这个用户";
       return res.render("login", { infoMsg : infoMsg });*/
-      req.session.error = "没有这个用户";
+      req.session.error = "用户名或密码错误";
       return res.redirect("/users/login");
     }
     //console.log(user["_id"]);
+    /*存在这个用户名则加密密码与数据库中密码比对*/
     var md5 = crypto.createHash("md5");
     var md5password = md5.update(password).digest("base64");
+    /*如果密码不一样*/
     if(user.password != md5password){
       req.session.error = "密码错误"; 
       return res.redirect("/users/login");
     }
+    /*密码正确给出登入提示即赋值session*/
     else{
       req.session.user = user;
       console.log(user["ID"]);
