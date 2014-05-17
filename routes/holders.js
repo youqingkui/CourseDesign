@@ -12,6 +12,61 @@ router.get('/add', function(req, res){
   
 });
 
+/*接收添加住户表单数据*/
+router.post('/add', function(req, res){
+  var holderName = req.body.holderName.trim();
+  var phoneNum   = req.body.phoneNum.trim();
+  var identityNum = req.body.identityNum.trim();
+  var date        = req.body.date.trim();
+  var fllorName   = req.body.fllorName.trim();
+  var newHolder = new Holder({
+    holderName : holderName,
+    phoneNum   : phoneNum,
+    identityNum: identityNum,
+    date       : date,
+    fllorName  : fllorName
+  });
+  /*查询是否已经有要入住的楼房已经有其他住户*/
+  Fllor.getOne(fllorName, function(err, fllor){
+    if(fllor && (!fllor.holderInfo)){
+      newHolder.save(function(err, holder){
+        if(err){
+          var errorMsg = "新建出现错误";
+          return res.render("addHolder", {errorMsg : errorMsg});
+        }
+        var updateValue = { 
+            holderName : holderName,
+            phoneNum   : phoneNum,
+            identityNum: identityNum,
+            date       : date,
+            ID         : holder[0]["_id"]
+        };
+        console.log(updateValue);
+        /*添加要入住的住房信息*/
+        Fllor.update({name : fllorName}, {holderInfo : updateValue}, function(err){
+          if(err){
+            var errorMsg = "更新对应楼层信息出现错误";
+            return res.render("addHolder", {errorMsg : errorMsg});
+          }
+          var successMsg = "新建成功";
+          return res.render("addHolder", {successMsg : successMsg});
+        });
+        
+      });
+    }
+    /*查询是否没有这个住房*/
+    else if(!fllor){
+      var errorMsg = "没有这个楼房";
+      return res.render("addHolder", {errorMsg : errorMsg});
+    }
+    else if(fllor &&(fllor.holderInfo)){
+      var errorMsg = "这个楼房已经有用户入驻";
+      return res.render("addHolder", {errorMsg : errorMsg});
+    }
+  });
+
+  
+});
 
 
 
